@@ -1,0 +1,109 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @unique @default(cuid())
+  name         String
+  nim          String        @unique
+  className    String
+  noHp         String
+  gender       String
+  email        String        @unique
+  password     String?
+  major        String
+  faculty      String
+  document     String
+  year         String
+  group_id     String?
+  group        Group?        @relation(fields: [group_id], references: [id])
+  subsmissions Submissions[]
+  modul        Modul[]
+
+  @@map("users")
+}
+
+enum Status {
+  DONE
+  OPENED
+  CLOSED
+}
+
+enum ModulStatus {
+  COMINGSOON
+  ONGOING
+  COMPLETED
+}
+
+model Admin {
+  id       String @id @default(cuid())
+  username String
+  password String
+
+  @@map("admin")
+}
+
+model Modul {
+  id           String      @id @default(cuid())
+  name         String
+  link         String
+  user_id      String
+  status       ModulStatus @default(COMINGSOON)
+  description  String      @db.VarChar()
+  image        String      @db.VarChar()
+  available_at DateTime
+  is_clicked   Boolean     @default(false)
+
+  user  User   @relation(fields: [user_id], references: [id])
+  tasks Task[]
+
+  @@map("moduls")
+}
+
+model Submissions {
+  id           String   @id @default(cuid())
+  file         String
+  submitted_at DateTime @default(now())
+  group_id     String
+  task_id      String
+  user_id      String
+  status       Status   @default(CLOSED)
+  group        Group    @relation(fields: [group_id], references: [id])
+  task         Task     @relation(fields: [task_id], references: [id])
+  user         User     @relation(fields: [user_id], references: [id])
+}
+
+model Task {
+  id          String        @id @default(cuid())
+  title       String
+  description String
+  file        String
+  deadline    DateTime
+  modul_id    String
+  submissions Submissions[]
+  modul       Modul         @relation(fields: [modul_id], references: [id])
+
+  @@map("tasks")
+}
+
+model Group {
+  id        String @id @default(cuid())
+  groupName String
+  user      User[]
+
+  submissions Submissions[]
+
+  @@map("groups")
+}
