@@ -5,3 +5,18 @@ export const getUser = async()=>{
     return user;
 }
 
+export const UpdateUserByEmail = async (email, user)=>{
+    const result = await prisma.user.update({
+        where:{email},
+        data:user
+    });
+    return result;
+} 
+
+export const UpdateUserById = async(id, user) => {
+    const result = await prisma.user.update({
+        where:{id},
+        data:user
+    });
+    return result;
+}

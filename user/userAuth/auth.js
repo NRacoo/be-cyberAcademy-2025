@@ -1,3 +1,5 @@
+import e from 'express';
+
 const prisma = require('../../config/prisma')
 
 export const registerUser = async(
@@ -52,6 +54,13 @@ export const getUserByEmail = async (email) =>{
         where:{
             email
         }
+    })
+    return result
+}
+
+export const GetAdmin = async (username) =>{
+    const result = await prisma.admin.findUnique({
+        where:{username}
     })
     return result
 }

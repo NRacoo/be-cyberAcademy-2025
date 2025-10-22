@@ -31,6 +31,7 @@ model User {
   group        Group?        @relation(fields: [group_id], references: [id])
   subsmissions Submissions[]
   modul        Modul[]
+  role         Role          @default(user)
 
   @@map("users")
 }
@@ -47,10 +48,16 @@ enum ModulStatus {
   COMPLETED
 }
 
+enum Role {
+  user
+  admin
+}
+
 model Admin {
   id       String @id @default(cuid())
-  username String
+  username String @unique
   password String
+  role     Role   @default(admin)
 
   @@map("admin")
 }
