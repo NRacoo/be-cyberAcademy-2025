@@ -1,8 +1,8 @@
-import { GetAdmin, getUserByEmail, getUserByNim } from './auth';
+const   { GetAdmin, GetUserByEmail, GetUserByNim, RegisterUser } = require('./auth');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
-export const RegisterUser = async (
+ const RegisterUserService = async (
     name, 
     nim, 
     className, 
@@ -20,17 +20,18 @@ export const RegisterUser = async (
         throw new Error("Format email tidak sesuai");
     }
 
-    const existUserByNim = await getUserByNim(nim)
+    const existUserByNim = await GetUserByNim(nim)
     if(existUserByNim){
         throw new Error("NIM sudah terdaftar");
     }
 
-    const existUserByEmail = await getUserByEmail(email);
+    const existUserByEmail = await GetUserByEmail(email);
     if(existUserByEmail){
         throw new Error("email sudah terdaftar");
     }
-
-    const hashedPassword = bcrypt.hash(nim, 10)
+   
+    const hashedPassword = await bcrypt.hash(nim, 10)
+    console.log("debug hash", hashedPassword, typeof hashedPassword)
     const user = await RegisterUser(
         name,
         nim,
@@ -47,36 +48,34 @@ export const RegisterUser = async (
     return user;
 }
 
-export const LoginUser = async (nim, password) =>{
+ const LoginUser = async (nim, password) =>{
     if (!nim || !password){
         throw new Error("NIM dan Password harus diisi");
         
     }
 
-    const user = await getUserByNim(nim);
+    const user = await GetUserByNim(nim);
     if(!user){
         throw new Error("user tidak ditemukan");
         
     }
 
-    const isMatch = bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password);
     if(!isMatch){
         throw new Error("password tidak valid");
     }
 
     const payload = {id : user.id, name: user.name, role: user.role}
 
-    const token = jwt.sign(payload, process.JWTTOKEN, {expiresIn:'7d'});
+    const token = jwt.sign(payload, process.env.JWTTOKEN, {expiresIn:'7d'});
 
     return{
-        status: true,
-        message:"login berhasil",
         payload,
         token: token,
     }
 }
 
-export const LoginAdmin = async (username, password) =>{
+ const LoginAdmin = async (username, password) =>{
     const result = await GetAdmin(username)
     if(!result){
         throw new Error("username admin salah");
@@ -97,9 +96,14 @@ export const LoginAdmin = async (username, password) =>{
     const token = jwt.sign(payload, process.env.JWTTOKEN)
 
     return{
-        status:true,
-        message:"Login berhasil",
         payload,
         token:token,
     }
+}
+
+module.exports = 
+{
+    RegisterUserService,
+    LoginUser,
+    LoginAdmin
 }

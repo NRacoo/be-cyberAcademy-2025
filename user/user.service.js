@@ -1,16 +1,15 @@
-import { UpdateUserByEmail, UpdateUserById } from './user.repository';
-import { getUserByEmail, getUserById } from './userAuth/auth';
-
+const { UpdateUserByEmail, UpdateUserById } = require('./user.repository') ;
+const { GetUserByEmail, GetUserById } = require('./userAuth/auth');
 const bcrypt = require('bcrypt');
 
 
-export const changePassword = async (id, oldPassword, newPassword) =>{
-    const user = await getUserById(id);
+ const changePassword = async (id, oldPassword, newPassword) =>{
+    const user = await GetUserById(id);
     if(!user){
         throw new Error("user tidak ditemukan");
     }
 
-    const isPasswordMarch = await bcrypt(oldPassword, user.password)
+    const isPasswordMarch = await bcrypt.compare(oldPassword, user.password)
     if(!isPasswordMarch){
         throw new Error("password tidak valid");
     };
@@ -23,8 +22,8 @@ export const changePassword = async (id, oldPassword, newPassword) =>{
     return updateUser;
 }
 
-export const resetPassword = async (email, password, confirmPassword) => {
-    const user = await getUserByEmail(email);
+ const resetPassword = async (email, password, confirmPassword) => {
+    const user = await GetUserByEmail(email);
     if(!user){
         throw new Error("user tidak ditemukan");
         
@@ -45,4 +44,10 @@ export const resetPassword = async (email, password, confirmPassword) => {
     delete UpdateUserPassword.password
     return UpdateUserPassword
     
+}
+
+module.exports = 
+{
+    changePassword,
+    resetPassword,
 }
