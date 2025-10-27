@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const validationToken = async(req, res, next) => {
+const validationToken = (req, res, next) => {
     const bearerHeader = req.headers['authorization']
 
     if(typeof bearerHeader != "undefined"){
@@ -20,6 +20,4 @@ const validationToken = async(req, res, next) => {
     }
 }
 
-module.exports = {
-    validationToken
-}
+module.exports = validationToken

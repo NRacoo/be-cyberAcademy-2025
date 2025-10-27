@@ -18,7 +18,7 @@ async function SeedAdmin(){
         if(existAdmin){
             throw new Error("Admin sudah dibuat")
         }
-        const hashedPassword = bcrypt.hash(password, 10)
+        const hashedPassword = await bcrypt.hash(password, 10)
 
         const seedAdmin = await prisma.admin.create({
             data:{
