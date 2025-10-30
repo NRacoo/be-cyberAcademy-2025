@@ -12,6 +12,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  
 }
 
 model User {
@@ -30,7 +31,7 @@ model User {
   group_id     String?
   group        Group?        @relation(fields: [group_id], references: [id])
   subsmissions Submissions[]
-  modul        Modul[]
+  topik        Topik
   role         Role          @default(user)
 
   @@map("users")
@@ -40,6 +41,13 @@ enum Status {
   DONE
   OPENED
   CLOSED
+}
+
+enum Topik {
+  WebDev
+  IoT
+  ML 
+  NetSec
 }
 
 enum ModulStatus {
@@ -66,14 +74,12 @@ model Modul {
   id           String      @id @default(cuid())
   name         String
   link         String
-  user_id      String
   status       ModulStatus @default(COMINGSOON)
+  topik        Topik       
   description  String      @db.VarChar()
   image        String      @db.VarChar()
   available_at DateTime
   is_clicked   Boolean     @default(false)
-
-  user  User   @relation(fields: [user_id], references: [id])
   tasks Task[]
 
   @@map("moduls")

@@ -10,6 +10,7 @@ const RegisterUser= async(
     gender,
     faculty,
     year,
+    topik,
     major,
     hashedPassword,
     document
@@ -24,6 +25,7 @@ const RegisterUser= async(
             gender:gender,
             faculty:faculty,
             year:year,
+            topik:topik,
             major:major,
             password:hashedPassword,
             document:document,
@@ -36,6 +38,15 @@ const RegisterUser= async(
     const result = await prisma.user.findUnique({
         where:{nim}
     })
+    return result
+}
+
+const Count = async (topik) => {
+    const result = await prisma.user.count(
+        {
+            where:{topik:topik}
+        }
+    )
     return result
 }
 
@@ -70,4 +81,5 @@ module.exports = {
     GetUserById,
     GetUserByNim,
     GetAdmin,
+    Count,
 }

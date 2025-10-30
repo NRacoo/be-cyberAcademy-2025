@@ -1,52 +1,47 @@
 const express = require('express');
 const upload = require('../config/multer');
-const supabase = require('../config/supabase');
 const { HandlerUploadModule } = require('./admin.service');
 const router = express.Router();
 
-router.post("/upload-module", upload.single("image"), async(req, res) => {
+router.post("/upload-module", async(req, res) => {
     try {
         const 
         {
-             name, 
+            name, 
             fileUrl,
-            user_id,
+            topik,
             status,
             description,
+            imageUrl,
             available_at,
             is_clicked
         } = req.body
 
-        let image = null;
-        if(req.file) {
-            const fileName = `${new Date.now()}--${req.file.originalname}`;
-            const {data, error} = await supabase.storage
-            .from("modul")
-            .upload(fileName, req.file.buffer, {
-                contentType: req.file.mimetype,
-                upsert:true
-            });
-
-            if(error) 
-            {
-                throw error
-            }
-            const {data: publicUrlData} = await supabase.storage
-            .from("modul")
-            .getPublicUrl(fileName)
-
-            image = publicUrlData.publicUrl;
-
-        };
-
-        const data = await HandlerUploadModule( name, 
+          const parsedData = {
+            name,
             fileUrl,
-            user_id,
+            topik,
             status,
             description,
-            image,
-            available_at,
-            is_clicked)
+            imageUrl,
+            available_at: available_at ? new Date(available_at) : null, 
+            is_clicked:
+                typeof is_clicked === "boolean"
+                ? is_clicked
+                : is_clicked === "true" 
+        };
+
+        
+
+        const data = await HandlerUploadModule( 
+            parsedData.name, 
+            parsedData.fileUrl,
+            parsedData.topik,
+            parsedData.status,
+            parsedData.description,
+            parsedData.imageUrl,
+            parsedData.available_at,
+            parsedData.is_clicked)
         res.status(201).json(
             {
                 status:true,
@@ -72,7 +67,7 @@ router.post("/upload-task", async(req, res) => {
             data:data
         }
     )
-})
+});
 
 
 module.exports = router

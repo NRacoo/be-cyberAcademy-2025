@@ -4,14 +4,14 @@ const { UploadModule, UploadTask } = require("./admin.repository")
 const HandlerUploadModule = async(
     name, 
     fileUrl,
-    user_id,
+    topik,
     status,
     description,
-    image,
+    imageUrl,
     available_at,
     is_clicked
 ) => {
-    const module = await UploadModule(name, fileUrl, user_id, status, description, image, available_at, is_clicked);
+    const module = await UploadModule(name, fileUrl, topik, status, description, imageUrl, available_at, is_clicked);
     return module
 }
 

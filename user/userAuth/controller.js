@@ -1,5 +1,5 @@
 const express = require('express');
-const { RegisterUserService, LoginUser } = require('./service');
+const { RegisterUserService, LoginUser, LoginAdmin, CountUser } = require('./service');
 const router = express.Router();
 
 router.post("/register", async(req, res) =>{
@@ -14,8 +14,15 @@ router.post("/register", async(req, res) =>{
             faculty,
             year,
             major,
+            topik,
             document
         } = req.body
+
+        const RegistredUser = await CountUser(topik);
+
+        if(RegistredUser) {
+            res.status(400).json({status:false, message:"pendaftar telah melebihi batas"})
+        }
     
         const data = await RegisterUserService(  
             name, 
@@ -27,6 +34,7 @@ router.post("/register", async(req, res) =>{
             faculty,
             year,
             major,
+            topik,
             document);
     
         if(!data){
@@ -58,5 +66,17 @@ router.post("/login", async (req, res) => {
         res.status(500).json({message:"internal server error", error:error})
     }
 });
+
+router.post("/admin/login", async(req, res) => {
+    try {
+        const {username, password} = req.body;
+    
+        const loginAdmin = await LoginAdmin(username, password)
+        res.status(201).json({status:true, message:"login berhasil", data:loginAdmin})
+    } catch (error) {
+        console.error("error di login admin", error);
+        res.status(500).json({status:false, message:error})        
+    }
+})
 
 module.exports = router

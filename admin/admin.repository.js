@@ -3,10 +3,10 @@ const prisma = require('../config/prisma');
 const UploadModule = async(
     name, 
     fileUrl,
-    user_id,
+    topik,
     status,
     description,
-    image,
+    imageUrl,
     available_at,
     is_clicked
 ) => {
@@ -14,10 +14,10 @@ const UploadModule = async(
         data:{
             name:name,
             link:fileUrl,
-            user:{connect:{id:user_id}},
+            topik:topik,
             status:status,
             description:description,
-            image:image,
+            image:imageUrl,
             available_at:new Date(available_at).toISOString(),
             is_clicked:is_clicked,
         }
