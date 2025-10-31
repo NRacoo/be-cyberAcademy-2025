@@ -25,7 +25,8 @@ const UploadModule = async(
     return result
 };
 
-const UploadTask = async (title, description, fileUrl, deadline, modul_id) => {
+const UploadTask = async (title, description, fileUrl, topik, deadline, modul_id) => {
+   console.log(deadline)
     const result = await prisma.task.create(
         {
             data:
@@ -34,6 +35,7 @@ const UploadTask = async (title, description, fileUrl, deadline, modul_id) => {
                 description:description,
                 file:fileUrl,
                 deadline: new Date(deadline).toISOString(),
+                topik: topik,
                 modul:{connect:{id:modul_id}},
             }
         }

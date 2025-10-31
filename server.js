@@ -16,10 +16,9 @@ app.use(cors({
 }));
 app.use(express.json())
 
-app.get("/", (res)=>{
+app.get("/", (res, req)=>{
     res.send("Hello CyberAcademy")
 })
-
 
 app.use("/api", apiRoutes)
 

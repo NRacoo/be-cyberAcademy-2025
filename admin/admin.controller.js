@@ -1,6 +1,6 @@
 const express = require('express');
 const upload = require('../config/multer');
-const { HandlerUploadModule } = require('./admin.service');
+const { HandlerUploadModule, HandlerUploadTask } = require('./admin.service');
 const router = express.Router();
 
 router.post("/upload-module", async(req, res) => {
@@ -56,9 +56,9 @@ router.post("/upload-module", async(req, res) => {
 });
 
 router.post("/upload-task", async(req, res) => {
-    const {title, description, fileUrl, deadline, modul_id} = req.body;
+    const {title, description, fileUrl, topik, deadline, modul_id} = req.body;
 
-    const data = await HandlerUploadTask(title, description, fileUrl, deadline, modul_id);
+    const data = await HandlerUploadTask(title, description, fileUrl, topik, deadline, modul_id);
 
     res.status(201).json(
         {

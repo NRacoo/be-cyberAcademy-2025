@@ -15,10 +15,11 @@ const HandlerUploadModule = async(
     return module
 }
 
-const HandlerUploadTask = async (title, description, fileUrl, deadline, modul_id) => {
-    const task = await UploadTask(title, description, fileUrl, deadline, modul_id);
+const HandlerUploadTask = async (title, description, fileUrl, deadline, topik, modul_id) => {
+    const task = await UploadTask(title, description, fileUrl, deadline, topik, modul_id);
     return task
 }
+
 
 module.exports = 
 {
