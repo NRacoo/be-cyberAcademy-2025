@@ -46,8 +46,17 @@ const bcrypt = require('bcrypt');
     
 }
 
+const userId = async (id) => {
+    const user = await GetUserById(id)
+    if(!user) throw new Error("user tidak ditemukan");
+    
+    delete user.password;
+    return user
+}
+
 module.exports = 
 {
     changePassword,
     resetPassword,
+    userId
 }

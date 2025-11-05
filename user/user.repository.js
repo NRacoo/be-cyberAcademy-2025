@@ -1,7 +1,11 @@
 const prisma = require('../config/prisma')
 
-const getUser = async()=>{
-    const user = await prisma.user.findMany()
+const getUserById = async()=>{
+    const user = await prisma.user.findUnique(
+        {
+            where:{id:id}
+        }
+    )
     return user;
 }
 
@@ -23,7 +27,7 @@ const UpdateUserById = async(id, user) => {
 
 module.exports =
 {
-    getUser,
+    getUserById,
     UpdateUserByEmail,
     UpdateUserById
 }

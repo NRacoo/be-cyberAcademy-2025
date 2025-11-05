@@ -65,5 +65,17 @@ route.post("/reset-password", async(req, res) => {
     }
 });
 
+route.get("/whoami", async(req, res) => {
+    try {
+        const data = userService.userId(req.user.id)
+        res.status(200).json({
+            status:true, message:"user ditemukan", data:data
+        })
+    } catch (error) {
+         res.status(500).json({status:false, message:"internal server error", data:error})
+        console.error(error)
+    }
+})
+
 
 module.exports = route
