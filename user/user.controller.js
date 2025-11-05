@@ -67,7 +67,7 @@ route.post("/reset-password", async(req, res) => {
 
 route.get("/whoami", async(req, res) => {
     try {
-        const data = userService.userId(req.user.id)
+        const data = await userService.userId(req.user.id)
         res.status(200).json({
             status:true, message:"user ditemukan", data:data
         })
