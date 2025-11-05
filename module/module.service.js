@@ -1,4 +1,4 @@
-const { GetModuleByUser } = require("./module.repository")
+const { GetModuleByUser, GetModuleByTopik } = require("./module.repository")
 
 
 const HandleGetModuleByUser = async (id) => {
@@ -7,4 +7,14 @@ const HandleGetModuleByUser = async (id) => {
     return result
 }
 
-module.exports = HandleGetModuleByUser;
+const HandleGetModuleByTopik = async (topik) => {
+    const result = await GetModuleByTopik(topik);
+    if(!result) throw new Error("topik tidak ditemukan");
+    return result
+}
+
+module.exports = 
+{
+    HandleGetModuleByUser,
+    HandleGetModuleByTopik
+}

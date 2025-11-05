@@ -31,9 +31,20 @@ const GetModuleByUser = async (id) => {
 
 }
 
+const GetModuleByTopik = async(topik) =>{
+    const result = await prisma.modul.findMany(
+        {
+            where:{topik},
+            include: {user:true}
+        }
+    )
+    return result
+}
+
 module.exports = 
 {
     GetModul,
     GetModuleByUser,
-    UpdateModul
+    UpdateModul,
+    GetModuleByTopik
 }
