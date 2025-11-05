@@ -1,5 +1,6 @@
 const express = require('express');
-const { RegisterUserService, LoginUser, LoginAdmin, CountUser } = require('./service');
+const { RegisterUserService, LoginUser, LoginAdmin } = require('./service');
+const { Count } = require('./auth');
 const router = express.Router();
 
 router.post("/register", async(req, res) =>{
@@ -17,12 +18,6 @@ router.post("/register", async(req, res) =>{
             topik,
             document
         } = req.body
-
-        const RegistredUser = await CountUser(topik);
-
-        if(RegistredUser) {
-            res.status(400).json({status:false, message:"pendaftar telah melebihi batas"})
-        }
     
         const data = await RegisterUserService(  
             name, 

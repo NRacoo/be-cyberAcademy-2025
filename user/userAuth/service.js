@@ -1,7 +1,6 @@
 const   { GetAdmin, GetUserByEmail, GetUserByNim, RegisterUser, Count } = require('./auth');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
-const prisma = require('../../config/prisma');
 
  const RegisterUserService = async (
     name, 
@@ -31,7 +30,15 @@ const prisma = require('../../config/prisma');
     if(existUserByEmail){
         throw new Error("email sudah terdaftar");
     }
-   
+    
+    const result = await Count(topik);
+    const MAX = 10
+    
+    if(result >= MAX){
+        throw new Error(`Pendaftaran untuk topik ${topik} sudah penuh`);
+        
+    }
+
     const hashedPassword = await bcrypt.hash(nim, 10)
     console.log("debug hash", hashedPassword, typeof hashedPassword)
     const user = await RegisterUser(
@@ -78,15 +85,6 @@ const prisma = require('../../config/prisma');
     }
 };
 
-const CountUser = async (topik) => {
-   const result = await Count(topik);
-    
-    if(result >= 30){
-        throw new Error("pendaftar melebihi batas maksimal");
-        
-    }
-}
-
 const LoginAdmin = async (username, password) =>{
     const result = await GetAdmin(username)
     if(!result){
@@ -118,5 +116,4 @@ module.exports =
     RegisterUserService,
     LoginUser,
     LoginAdmin,
-    CountUser
 }
