@@ -46,7 +46,7 @@ enum Status {
 enum Topik {
   WebDev
   IoT
-  ML 
+  ComVis
   NetSec
 }
 
