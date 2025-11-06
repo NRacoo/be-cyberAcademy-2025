@@ -25,8 +25,8 @@ const RegisterUser= async(
             gender:gender,
             faculty:faculty,
             year:year,
-            topik:topik,
             major:major,
+            topik:topik,
             password:hashedPassword,
             document:document,
         }
