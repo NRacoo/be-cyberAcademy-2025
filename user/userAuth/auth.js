@@ -10,8 +10,8 @@ const RegisterUser= async(
     gender,
     faculty,
     year,
-    topik,
     major,
+    topik,
     hashedPassword,
     document
 )=>{
