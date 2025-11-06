@@ -11,8 +11,8 @@ const jwt = require('jsonwebtoken');
     gender,
     faculty,
     year,
-    topik,
     major,
+    topik,
     document,
 ) => {
     const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
