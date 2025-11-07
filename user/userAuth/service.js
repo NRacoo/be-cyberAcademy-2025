@@ -30,9 +30,9 @@ const jwt = require('jsonwebtoken');
     if(existUserByEmail){
         throw new Error("email sudah terdaftar");
     }
-    
+
     const result = await Count(topik);
-    const MAX = 10
+    const MAX = 25
     
     if(result >= MAX){
         throw new Error(`Pendaftaran untuk topik ${topik} sudah penuh`);
