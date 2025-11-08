@@ -32,7 +32,7 @@ const jwt = require('jsonwebtoken');
     }
 
     const result = await Count(topik);
-    const MAX = 25
+    const MAX = 20
     
     if(result >= MAX){
         throw new Error(`Pendaftaran untuk topik ${topik} sudah penuh`);
