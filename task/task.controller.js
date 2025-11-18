@@ -17,7 +17,7 @@ router.get("/:id", async(req, res) => {
 
 router.get("/by-topik/:topik", async(req, res) => {
     try {
-        const {topik} = req.query
+        const {topik} = req.params
        
         const task = await GetTaskByTopik(topik)
         res.status(200).json({status:true, message:"task berhasil didapat", data:task})
