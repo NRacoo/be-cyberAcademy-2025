@@ -75,7 +75,7 @@ const jwt = require('jsonwebtoken');
         throw new Error("password tidak valid");
     }
 
-    const payload = {id : user.id, name: user.name, role: user.role}
+    const payload = {id : user.id, name: user.name, topik:user.topik,role: user.role}
 
     const token = jwt.sign(payload, process.env.JWTTOKEN, {expiresIn:'7d'});
 
