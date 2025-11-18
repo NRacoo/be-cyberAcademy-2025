@@ -90,11 +90,11 @@ model Submissions {
   file         String
   submitted_at DateTime @default(now())
   topik        Topik
-  group_id     String
+  group_id     String?
   task_id      String
   user_id      String
   status       Status   @default(CLOSED)
-  group        Group    @relation(fields: [group_id], references: [id])
+  group        Group?    @relation(fields: [group_id], references: [id])
   task         Task     @relation(fields: [task_id], references: [id])
   user         User     @relation(fields: [user_id], references: [id])
 }
