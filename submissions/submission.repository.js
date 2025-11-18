@@ -2,7 +2,7 @@ const prisma = require("../config/prisma")
 const { GetTaskById } = require("../task/task.repository")
 
 
-const CreateSubmission = async(file, taskId) => {
+const CreateSubmission = async(file, taskId, userId) => {
     const task = await GetTaskById(taskId)
 
     if(!task) throw new Error("task tidak ditemukan");
@@ -12,7 +12,8 @@ const CreateSubmission = async(file, taskId) => {
         data:{
             file:file,
             task:{ connect : {id : taskId} },
-            topik: task.topik
+            topik: task.topik,
+            user:{connect: {id: userId}}
         },
     })
     return data

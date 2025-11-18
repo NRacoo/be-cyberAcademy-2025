@@ -4,9 +4,9 @@ const router = express.Router()
 
 router.post("/upload-submission", async(req, res) => {
     try {
-        const {file, taskId} = req.body;
+        const {file, taskId, userId} = req.body;
 
-        const newSubmission = await HandleCreateSubmission(file, taskId);
+        const newSubmission = await HandleCreateSubmission(file, taskId, userId);
 
         if(!newSubmission) throw new Error("submission gagal");
         
