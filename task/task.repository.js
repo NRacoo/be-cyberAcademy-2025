@@ -33,7 +33,7 @@ const GetTaskByTopik = async(topik, userId) => {
         })
         const mapped = result.map(task => ({
             id:task.id,
-            title:task.id,
+            title:task.title,
             description:task.description,
             file:task.file,
             deadline:task.deadline,
