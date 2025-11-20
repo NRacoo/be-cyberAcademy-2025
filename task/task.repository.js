@@ -19,29 +19,30 @@ const GetTaskByTopik = async(topik, userId) => {
     const result = await prisma.task.findMany(
         {
             where:{topik: topik},
-            include:{
-                submissions:{
-                    where:{user_id : userId},
-                    select:{
-                        id:true,
-                        file:true,
-                        status:true,
-                        submitted_at:true
-                    }
-                }
+        })
+        const mapped = await Promise.all(
+        result.map(async (task) => {
+        const submission = await prisma.submissions.findFirst({
+            where: {
+                task_id: task.id,
+                user_id: userId
             }
         })
-        const mapped = result.map(task => ({
-            id:task.id,
-            title:task.title,
-            description:task.description,
-            file:task.file,
-            deadline:task.deadline,
-            topik:task.topik,
-            isSubmitted:task.submissions.length > 0,
-            submissionsFile:task.submissions[0]?.file ?? null,
-            submissionsStatus:task.submissions[0]?.status ?? null
-        }))
+
+        return {
+            id: task.id,
+            title: task.title,
+            description: task.description,
+            file: task.file,
+            deadline: task.deadline,
+            topik: task.topik,
+            isSubmitted: !!submission,
+            submissionsFile: submission?.file ?? null,
+            submissionsStatus: submission?.status ?? null,
+        }
+        })
+    )
+
     console.log("result" , mapped)
     return mapped
 }
