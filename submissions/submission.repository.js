@@ -13,7 +13,8 @@ const CreateSubmission = async(file, taskId, userId) => {
             file:file,
             task:{ connect : {id : taskId} },
             topik: task.topik,
-            user:{connect: {id: userId}}
+            user:{connect: {id: userId}},
+            status:"DONE"
         },
     })
     return data
